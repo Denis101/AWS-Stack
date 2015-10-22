@@ -1,20 +1,32 @@
 {
-  "Description": "Super6 LAMP Stack DB servers",
+  "Description": "LAMP Stack DB servers",
   "Parameters": {
     "InstanceTypeDbserver": {
       "Type": "String",
       "Default": "db.t2.micro"
+    },
+    "DbEngine": {
+      "Type": "String",
+      "Default": "MySQL"
+    },
+    "DbUsername": {
+      "Type": "String"
+    },
+    "DbPassword": {
+      "Type": "String"
     }
   },
-  "DbServer": {
-     "Type" : "AWS::RDS::DBInstance",
-     "Properties" : {
-         "AllocatedStorage" : "5",
-         "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
-         "Engine" : "MySQL",
-         "MasterUsername" : "root",
-         "MasterUserPassword" : "B4c0n1234"
-     },
-     "DeletionPolicy" : "Snapshot"
-   }
+  "Resources": {
+    "DbServer": {
+       "Type" : "AWS::RDS::DBInstance",
+       "Properties" : {
+           "AllocatedStorage" : "5",
+           "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
+           "Engine" : { "Ref": "DbEngine" },
+           "MasterUsername" : { "Ref": "DbUsername" },
+           "MasterUserPassword" : { "Ref": "DbPassword" }
+       },
+       "DeletionPolicy" : "Snapshot"
+     }
+  }
 }

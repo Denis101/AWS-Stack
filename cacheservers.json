@@ -1,3 +1,17 @@
 {
-  
+  "Description": "LAMP Stack cache servers",
+  "Parameters": {
+    "InstanceTypeCacheServer": {
+      "Type": "String",
+      "Default": "cache.t2.micro"
+    }
+  },
+  "Resources": {
+    "CacheServer": {
+       "Type" : "AWS::ElastiCache::CacheCluster",
+       "Properties" : {
+           "CacheNodeType" : { "Ref": "InstanceTypeCacheServer" },
+       }
+     }
+  }
 }

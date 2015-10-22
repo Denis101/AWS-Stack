@@ -1,5 +1,5 @@
 {
-  "Description": "Super6 LAMP Stack Webservers",
+  "Description": "LAMP Stack Webservers",
   "Parameters": {
     "InstanceTypeWebserver": {
       "Type": "String",
@@ -10,8 +10,7 @@
       "Default": "ami-ba7772a7"
     },
     "KeyPair": {
-      "Type": "String",
-      "Default": "denis_craig"
+      "Type": "String"
     }
   },
   "Resources": {
