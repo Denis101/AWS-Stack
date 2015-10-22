@@ -8,6 +8,10 @@
     "AMIWebserver": {
       "Type": "String",
       "Default": "ami-ba7772a7"
+    },
+    "KeyPair": {
+      "Type": "String",
+      "Default": "denis_craig"
     }
   },
   "Resources": {
@@ -54,10 +58,14 @@
       "Properties": {
         "InstanceType": { "Ref": "InstanceTypeWebserver" },
         "ImageId": { "Ref": "AMIWebserver" },
+        "KeyName": { "Ref": "KeyPair" },
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": ["", [
-                "#!/bin/bash\n"
+                "#!/bin/bash\n",
+                "sudo apt-get update\n",
+                "sudo apt-get install -y apache2\n",
+                "sudo apt-get install -y php5 libapache2-mod-php5 php5-mcrypt\n"
               ]
             ]
           }

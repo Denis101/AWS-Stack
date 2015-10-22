@@ -12,8 +12,8 @@
          "AllocatedStorage" : "5",
          "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
          "Engine" : "MySQL",
-         "MasterUsername" : "MyName",
-         "MasterUserPassword" : "MyPassword"
+         "MasterUsername" : "root",
+         "MasterUserPassword" : "B4c0n1234"
      },
      "DeletionPolicy" : "Snapshot"
    }
