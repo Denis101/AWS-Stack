@@ -1,0 +1,68 @@
+{
+  "Description": "Super6 LAMP Stack Webservers",
+  "Parameters": {
+    "InstanceTypeWebserver": {
+      "Type": "String",
+      "Default": "t2.micro"
+    },
+    "AMIWebserver": {
+      "Type": "String",
+      "Default": "ami-ba7772a7"
+    }
+  },
+  "Resources": {
+    "PublicELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "AvailabilityZones": { "Fn::GetAZs" : "" },
+        "CrossZone": "true",
+        "HealthCheck": {
+          "Target": "TCP:80",
+          "HealthyThreshold": "2",
+          "UnhealthyThreshold": "5",
+          "Timeout": "5",
+          "Interval": "6"
+        },
+        "Listeners": [
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "80",
+            "Protocol": "HTTP"
+          }
+        ]
+      }
+    },
+    "WebserverASG": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "AvailabilityZones": { "Fn::GetAZs" : "" },
+        "LaunchConfigurationName": { "Ref": "WebserverInstance" },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Webserver",
+            "PropagateAtLaunch": "true"
+          }
+        ],
+        "LoadBalancerNames": [{ "Ref": "PublicELB" }],
+        "MinSize": "2",
+        "MaxSize": "2"
+      }
+    },
+    "WebserverInstance": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "InstanceType": { "Ref": "InstanceTypeWebserver" },
+        "ImageId": { "Ref": "AMIWebserver" },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": ["", [
+                "#!/bin/bash\n"
+              ]
+            ]
+          }
+        }
+      }
+    }
+  }
+}

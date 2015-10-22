@@ -1,0 +1,20 @@
+{
+  "Description": "Super6 LAMP Stack DB servers",
+  "Parameters": {
+    "InstanceTypeDbserver": {
+      "Type": "String",
+      "Default": "db.t2.micro"
+    }
+  },
+  "DbServer": {
+     "Type" : "AWS::RDS::DBInstance",
+     "Properties" : {
+         "AllocatedStorage" : "5",
+         "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
+         "Engine" : "MySQL",
+         "MasterUsername" : "MyName",
+         "MasterUserPassword" : "MyPassword"
+     },
+     "DeletionPolicy" : "Snapshot"
+   }
+}
