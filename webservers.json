@@ -32,6 +32,9 @@
             "LoadBalancerPort": "80",
             "Protocol": "HTTP"
           }
+        ],
+        "SecurityGroups": [
+          { "Ref": "WebserverSecurityGroup" }
         ]
       }
     },
@@ -58,6 +61,9 @@
         "InstanceType": { "Ref": "InstanceTypeWebserver" },
         "ImageId": { "Ref": "AMIWebserver" },
         "KeyName": { "Ref": "KeyPair" },
+        "SecurityGroups": [
+          { "Ref": "WebserverSecurityGroup" }
+        ],
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": ["", [
@@ -69,6 +75,21 @@
             ]
           }
         }
+      }
+    },
+    "WebserverSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security Group for ELB and webservers",
+        "VpcId": "vpc-774daf1e",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
       }
     }
   }
