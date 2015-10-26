@@ -1,0 +1,24 @@
+---
+- name: Orchestrate the stacks
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Orchestrate webservers with CloudFormation
+      cloudformation:
+        stack_name: "lamp-web-stack"
+        state: "present"
+        region: "eu-central-1"
+        template: "roles/appserver/files/cloudformation.json"
+        template_parameters:
+          KeyPair: "{{ lookup('env', 'AWS_KEY_PAIR') }}"
+
+    - name: Orchestrate dbservers with CloudFormation
+      cloudformation:
+        stack_name: "lamp-db-stack"
+        state: "present"
+        region: "eu-central-1"
+        template: "roles/dbserver/files/cloudformation.json"
+        template_parameters:
+          KeyPair: "{{ lookup('env', 'AWS_KEY_PAIR') }}"

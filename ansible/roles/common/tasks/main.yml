@@ -1,0 +1,8 @@
+---
+- name: Update apt-get
+  apt: update_cache=yes
+  
+- name: Install Packages
+  apt: pkg=ntp state=installed
+  notify:
+    - restart ntpd

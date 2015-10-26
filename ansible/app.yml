@@ -1,0 +1,7 @@
+---
+- hosts: ec2
+  sudo: yes
+
+  roles:
+    - common
+    - appserver
