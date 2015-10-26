@@ -6,3 +6,15 @@
     - php5
     - libapache2-mod-php5
     - php5-mcrypt
+
+- name: Create app config directory
+  file: path=/etc/"{{ app_name }}" state=directory
+
+- name: Create app directory
+  file: path="{{ app_root }}" state=directory
+
+- name: Setup app config
+  template: src=config.php.j2 dest=/etc/{{ app_name }}/config.php
+
+- name: Symlink app config
+  file: src=/etc/{{ app_name }}/config.php dest={{ app_root }}/config.php state=link

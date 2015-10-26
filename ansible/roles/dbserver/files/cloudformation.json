@@ -9,6 +9,10 @@
       "Type": "String",
       "Default": "MySQL"
     },
+    "DbName": {
+      "Type": "String",
+      "Default": "test"
+    },
     "DbUsername": {
       "Type": "String"
     },
@@ -18,15 +22,31 @@
   },
   "Resources": {
     "DbServer": {
-       "Type" : "AWS::RDS::DBInstance",
-       "Properties" : {
-           "AllocatedStorage" : "5",
-           "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
-           "Engine" : { "Ref": "DbEngine" },
-           "MasterUsername" : { "Ref": "DbUsername" },
-           "MasterUserPassword" : { "Ref": "DbPassword" }
-       },
-       "DeletionPolicy" : "Snapshot"
-     }
+      "Type" : "AWS::RDS::DBInstance",
+        "Properties" : {
+          "DBInstanceIdentifier": {
+            "Fn::Join": [ "-",
+              [
+                { "Ref": "DbEngine" },
+                { "Ref": "DbName" },
+                "test"
+              ]
+            ]
+          },
+          "DBName": { "Ref": "DbName" },
+          "AllocatedStorage" : "5",
+          "DBInstanceClass" : { "Ref": "InstanceTypeDbserver" },
+          "Engine" : { "Ref": "DbEngine" },
+          "MasterUsername" : { "Ref": "DbUsername" },
+          "MasterUserPassword" : { "Ref": "DbPassword" },
+          "Tags": [
+            {
+              "Key": "role",
+              "Value": "dbservers"
+            }
+          ]
+      },
+      "DeletionPolicy" : "Snapshot"
+    }
   }
 }

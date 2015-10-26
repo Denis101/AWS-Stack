@@ -1,6 +1,9 @@
 {
   "Description": "LAMP Stack Webservers",
   "Parameters": {
+    "ELBName": {
+      "Type": "String"
+    },
     "InstanceTypeWebserver": {
       "Type": "String",
       "Default": "t2.micro"
@@ -17,6 +20,7 @@
     "PublicELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
+        "LoadBalancerName": { "Ref": "ELBName" },
         "AvailabilityZones": { "Fn::GetAZs" : "" },
         "CrossZone": "true",
         "HealthCheck": {
@@ -77,6 +81,18 @@
             "FromPort": "80",
             "ToPort": "80",
             "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "31.50.11.105/32"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "82.30.234.191/32"
           }
         ]
       }

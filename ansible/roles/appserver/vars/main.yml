@@ -1,3 +1,2 @@
 ---
-project_name: appname
-project_root: /var/www/html/app/
+app_root: /var/www/html/"{{ app_name }}"/

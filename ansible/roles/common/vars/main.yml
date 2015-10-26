@@ -1,0 +1,7 @@
+---
+aws_region: eu-central-1
+
+db_username: root
+db_password: B4c0n1234
+
+app_name: lamp

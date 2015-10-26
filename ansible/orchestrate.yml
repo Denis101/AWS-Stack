@@ -5,20 +5,24 @@
   gather_facts: false
 
   tasks:
+    - include_vars: roles/common/vars/main.yml
+
     - name: Orchestrate webservers with CloudFormation
       cloudformation:
-        stack_name: "lamp-web-stack"
+        stack_name: "{{ app_name }}-web-{{ lookup('env', 'APPLICATION_ENV') }}"
         state: "present"
-        region: "eu-central-1"
+        region: "{{ aws_region }}"
         template: "roles/appserver/files/cloudformation.json"
         template_parameters:
+          ELBName: "{{ app_name }}-elb-{{ lookup('env', 'APPLICATION_ENV') }}"
           KeyPair: "{{ lookup('env', 'AWS_KEY_PAIR') }}"
 
     - name: Orchestrate dbservers with CloudFormation
       cloudformation:
-        stack_name: "lamp-db-stack"
+        stack_name: "{{ app_name }}-db-{{ lookup('env', 'APPLICATION_ENV') }}"
         state: "present"
-        region: "eu-central-1"
+        region: "{{ aws_region }}"
         template: "roles/dbserver/files/cloudformation.json"
         template_parameters:
-          KeyPair: "{{ lookup('env', 'AWS_KEY_PAIR') }}"
+          DbUsername: "{{ db_username }}"
+          DbPassword: "{{ db_password }}"

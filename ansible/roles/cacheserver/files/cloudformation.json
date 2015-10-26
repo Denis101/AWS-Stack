@@ -11,6 +11,8 @@
        "Type" : "AWS::ElastiCache::CacheCluster",
        "Properties" : {
            "CacheNodeType" : { "Ref": "InstanceTypeCacheServer" },
+           "NumCacheNodes": "1",
+           "Engine": "redis"
        }
      }
   }
