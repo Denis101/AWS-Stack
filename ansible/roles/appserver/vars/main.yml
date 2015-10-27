@@ -1,3 +1,4 @@
 ---
 app_hostname: app.test
 app_root: /var/www/html/{{ app_name }}
+app_repo: https://github.com/Denis101/AWS-Stack.git

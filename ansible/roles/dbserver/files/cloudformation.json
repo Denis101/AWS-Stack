@@ -1,6 +1,9 @@
 {
   "Description": "LAMP Stack DB servers",
   "Parameters": {
+    "VpcId": {
+      "Type": "String"
+    },
     "InstanceTypeDbserver": {
       "Type": "String",
       "Default": "db.t2.micro"
@@ -39,6 +42,10 @@
           "Engine" : { "Ref": "DbEngine" },
           "MasterUsername" : { "Ref": "DbUsername" },
           "MasterUserPassword" : { "Ref": "DbPassword" },
+          "MultiAZ": "true",
+          "VPCSecurityGroups": [
+            { "Ref": "DBSecurityGroup" }
+          ],
           "Tags": [
             {
               "Key": "role",
@@ -47,6 +54,21 @@
           ]
       },
       "DeletionPolicy" : "Snapshot"
+    },
+    "DBSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security Group for dbservers",
+        "VpcId": { "Ref": "VpcId" },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "3306",
+            "ToPort": "3306",
+            "CidrIp": "172.31.0.0/16"
+          }
+        ]
+      }
     }
   }
 }

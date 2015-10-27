@@ -1,5 +1,5 @@
 ---
-- name: Orchestrate the stacks
+- name: Orchestration
   hosts: localhost
   connection: local
   gather_facts: false
@@ -14,6 +14,7 @@
         region: "{{ aws_region }}"
         template: "roles/appserver/files/cloudformation.json"
         template_parameters:
+          VpcId: "vpc-774daf1e"
           ELBName: "{{ app_name }}-elb-{{ lookup('env', 'APPLICATION_ENV') }}"
           KeyPair: "{{ lookup('env', 'AWS_KEY_PAIR') }}"
 
@@ -24,5 +25,6 @@
         region: "{{ aws_region }}"
         template: "roles/dbserver/files/cloudformation.json"
         template_parameters:
+          VpcId: "vpc-774daf1e"
           DbUsername: "{{ db_username }}"
           DbPassword: "{{ db_password }}"
