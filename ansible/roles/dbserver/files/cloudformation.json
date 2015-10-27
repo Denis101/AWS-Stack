@@ -8,6 +8,9 @@
       "Type": "String",
       "Default": "db.t2.micro"
     },
+    "Environment": {
+      "Type": "String"
+    },
     "DbEngine": {
       "Type": "String",
       "Default": "MySQL"
@@ -32,7 +35,7 @@
               [
                 { "Ref": "DbEngine" },
                 { "Ref": "DbName" },
-                "test"
+                { "Ref": "Environment" }
               ]
             ]
           },

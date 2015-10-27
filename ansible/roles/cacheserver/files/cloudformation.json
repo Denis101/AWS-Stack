@@ -1,9 +1,19 @@
 {
   "Description": "LAMP Stack cache servers",
   "Parameters": {
+    "VpcId": {
+      "Type": "String"
+    },
     "InstanceTypeCacheServer": {
       "Type": "String",
       "Default": "cache.t2.micro"
+    },
+    "Environment": {
+      "Type": "String"
+    },
+    "CacheEngine": {
+      "Type": "String",
+      "Default": "redis"
     }
   },
   "Resources": {
@@ -12,7 +22,34 @@
        "Properties" : {
            "CacheNodeType" : { "Ref": "InstanceTypeCacheServer" },
            "NumCacheNodes": "1",
-           "Engine": "redis"
+           "Engine": { "Ref": "CacheEngine" },
+           "ClusterName": {
+             "Fn::Join": [ "-",
+               [
+                 { "Ref": "CacheEngine" },
+                 "cache",
+                 { "Ref": "Environment" }
+               ]
+             ]
+           },
+           "VpcSecurityGroupIds": [
+             { "Ref": "CacheSecurityGroup" }
+           ]
+       }
+     },
+     "CacheSecurityGroup": {
+       "Type": "AWS::EC2::SecurityGroup",
+       "Properties": {
+         "GroupDescription": "Security Group for cacheservers",
+         "VpcId": { "Ref": "VpcId" },
+         "SecurityGroupIngress": [
+           {
+             "IpProtocol": "tcp",
+             "FromPort": "6379",
+             "ToPort": "6379",
+             "CidrIp": "172.31.0.0/16"
+           }
+         ]
        }
      }
   }

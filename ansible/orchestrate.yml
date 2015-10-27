@@ -28,3 +28,14 @@
           VpcId: "vpc-774daf1e"
           DbUsername: "{{ db_username }}"
           DbPassword: "{{ db_password }}"
+          Environment: "{{ lookup('env', 'APPLICATION_ENV') }}"
+
+    - name: Orchestrate cacheservers with CloudFormation
+      cloudformation:
+        stack_name: "{{ app_name }}-cache-{{ lookup('env', 'APPLICATION_ENV') }}"
+        state: "present"
+        region: "{{ aws_region }}"
+        template: "roles/cacheserver/files/cloudformation.json"
+        template_parameters:
+          VpcId: "vpc-774daf1e"
+          Environment: "{{ lookup('env', 'APPLICATION_ENV') }}"
