@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+  ServerName {{ app_hostname }}
+  DocumentRoot {{ app_root }}/application
+
+  ErrorLog ${APACHE_LOG_DIR}/{{ app_name }}/error.log
+  CustomLog ${APACHE_LOG_DIR}/{{ app_name }}/access.log combined
+</VirtualHost>

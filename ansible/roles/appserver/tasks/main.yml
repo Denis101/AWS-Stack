@@ -3,18 +3,40 @@
   apt: pkg={{ item }} state=installed
   with_items:
     - apache2
+    - mysql-client
     - php5
     - libapache2-mod-php5
     - php5-mcrypt
+    - php5-mysql
+
+- name: Copy php.ini
+  copy: src=php.ini dest=/etc/php5/apache2/php.ini mode=0644
 
 - name: Create app config directory
   file: path=/etc/"{{ app_name }}" state=directory
 
-- name: Create app directory
-  file: path="{{ app_root }}" state=directory
+- name: Create app log directory
+  file: path=/var/log/apache2/{{ app_name }} state=directory
+
+- stat: path={{ app_root }}
+  register: app_root_path
+
+- file: path={{ app_root }} state=absent
+  when: app_root_path.stat.exists == True
+
+- name: (TEMP) Pull application from repository
+  git: repo=https://github.com/Denis101/AWS-Stack.git dest={{ app_root }}
 
 - name: Setup app config
   template: src=config.php.j2 dest=/etc/{{ app_name }}/config.php
 
 - name: Symlink app config
-  file: src=/etc/{{ app_name }}/config.php dest={{ app_root }}/config.php state=link
+  file: src=/etc/{{ app_name }}/config.php dest={{ app_root }}/application/config.php state=link
+
+- name: Setup vhost config
+  template: src=vhost.conf.j2 dest=/etc/apache2/sites-available/{{ app_name }}.conf
+
+- name: Symlink vhost config
+  file: src=/etc/apache2/sites-available/{{ app_name }}.conf dest=/etc/apache2/sites-enabled/{{ app_name }}.conf state=link
+  notify:
+    - restart apache

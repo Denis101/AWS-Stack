@@ -1,6 +1,8 @@
 <?php
 
-$link = mysqli_connect(get_env('DB_HOSTNAME'), 'root', 'B4c0n1234', 'test');
+require_once('./config.php');
+
+$link = mysqli_connect(DB_HOSTNAME, 'root', 'B4c0n1234', 'test');
 
 if (!$link) {
   die('Can\'t connect to MySQL.');

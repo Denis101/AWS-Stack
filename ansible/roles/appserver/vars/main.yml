@@ -1,2 +1,3 @@
 ---
-app_root: /var/www/html/"{{ app_name }}"/
+app_hostname: app.test
+app_root: /var/www/html/{{ app_name }}
